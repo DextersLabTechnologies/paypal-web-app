@@ -1,7 +1,7 @@
 node{
   def mavenHome = tool name: 'maven3.8.4'
   stage('1.Clone'){
-    git branch: 'master', credentialsId: 'Git_Credentials', url: 'https://github.com/LandmakTechnology/paypal-web-app'
+    git branch: 'https://github.com/DextersLabTechnologies/paypal-web-app-most-recent.git'
   }
   stage('2.MavenBuild'){
     sh "${mavenHome}/bin/mvn clean package"
@@ -14,11 +14,11 @@ node{
    //sh "${mavenHome}/bin/mvn deploy"
   }
       stage('6.Deploy2dev'){
-      deploy adapters: [tomcat9(credentialsId: 'Tomcat_Credentials', path: '', url: 'http://18.207.210.70:8080/')], contextPath: null, war: 'target/web-app.war'
+      deploy adapters: [tomcat9(credentialsId: '26f1ae31-c60e-471e-bcec-4727105ae200', path: '', url: 'http://3.144.148.202:7000/manager/html')], contextPath: null, war: 'target/*war'
 }
       stage('5.Deploy2uat'){
         sshagent(['agentcredentials']) {
-        sh "scp -o StrictHostKeyChecking=no target/*.war ec2-user@172.31.89.218:/opt/tomcat9/webapps/uat.war"
+        sh "scp -o StrictHostKeyChecking=no target/*.war ec2-user@3.144.148.202:/opt/tomcat9/webapps/uat.war"
         
 }
       
